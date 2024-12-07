@@ -12,6 +12,6 @@ const DATA = [
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App tasks={DATA} />
+    <App _tasks={DATA} />
   </StrictMode>,
 )

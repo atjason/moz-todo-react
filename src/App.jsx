@@ -1,16 +1,53 @@
 
+import { useState } from 'react'
 import Todo from './components/Todo'
 import Form from './components/Form'
 import FilterButton from './components/FilterButton'
 
-function App({ tasks }) {
-  const taskList = tasks?.map(task => (
-    <Todo id={task.id} name={task.name} completed={task.completed} key={task.id} />
-  ))
+function App({ _tasks }) {
 
   function addTask(name) {
-    alert(name)
+    const id = crypto.randomUUID()
+    const newTask = { id, name, completed: false }
+    setTasks([...tasks, newTask])
   }
+
+  function toggleTaskCompleted(id) {
+    setTasks(tasks.map(task => {
+      if (id === task.id) {
+        return { ...task, completed: !task.completed }
+      }
+      return task
+    }))
+  }
+
+  function editTask(id, newName) {
+    setTasks(tasks.map(task => {
+      if (id === task.id) {
+        return { ...task, name: newName }
+      }
+      return task
+    }))
+  }
+
+  function deleteTask(id) {
+    setTasks(tasks.filter(task => task.id !== id))
+  }
+
+  const [tasks, setTasks] = useState(_tasks)
+  const headingText = `${tasks.length} ${tasks.length === 1 ? 'task' : 'tasks'} remaining`
+
+  const taskList = tasks?.map(task => (
+    <Todo 
+      id={task.id} 
+      name={task.name} 
+      completed={task.completed} 
+      key={task.id} 
+      toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
+      editTask={editTask}
+    />
+  ))
 
   return (
     <div className="todoapp stack-large">
@@ -21,7 +58,7 @@ function App({ tasks }) {
         <FilterButton name="active" />
         <FilterButton name="completed" />
       </div>
-      <h2 id="list-heading">3 tasks remaining</h2>
+      <h2 id="list-heading">{headingText}</h2>
       <ul
         role="list"
         className="todo-list stack-large stack-exception"
