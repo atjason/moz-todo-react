@@ -1,12 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-
-function usePrevious(value) {
-  const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
-}
+import { usePrevious } from './Utils'
 
 function Todo({ id, name, completed, toggleTaskCompleted, deleteTask, editTask }) {
 
