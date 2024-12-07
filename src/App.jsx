@@ -4,6 +4,14 @@ import Todo from './components/Todo'
 import Form from './components/Form'
 import FilterButton from './components/FilterButton'
 
+const FILTER_MAP = {
+  all: () => true,
+  active: task => !task.completed,
+  completed: task => task.completed
+}
+
+const FILTER_NAMES = Object.keys(FILTER_MAP)
+
 function App({ _tasks }) {
 
   function addTask(name) {
@@ -35,11 +43,14 @@ function App({ _tasks }) {
   }
 
   const [tasks, setTasks] = useState(_tasks)
+  const [filter, setFilter] = useState('all')
   const headingText = `${tasks.length} ${tasks.length === 1 ? 'task' : 'tasks'} remaining`
 
-  const taskList = tasks?.map(task => (
-    <Todo 
-      id={task.id} 
+  const taskList = tasks
+    .filter(FILTER_MAP[filter])
+    .map(task => (
+      <Todo 
+        id={task.id} 
       name={task.name} 
       completed={task.completed} 
       key={task.id} 
@@ -49,14 +60,16 @@ function App({ _tasks }) {
     />
   ))
 
+  const filterList = FILTER_NAMES.map(name => (
+    <FilterButton key={name} name={name} isPressed={name === filter} setFilter={setFilter} />
+  ))
+
   return (
     <div className="todoapp stack-large">
       <h1>TodoMatic</h1>
       <Form addTask={addTask} />
       <div className="filters btn-group stack-exception">
-      <FilterButton name="all" />
-        <FilterButton name="active" />
-        <FilterButton name="completed" />
+        {filterList}
       </div>
       <h2 id="list-heading">{headingText}</h2>
       <ul
