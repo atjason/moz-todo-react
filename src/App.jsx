@@ -52,13 +52,13 @@ function App({ _tasks }) {
     .map(task => (
       <Todo 
         id={task.id} 
-      name={task.name} 
-      completed={task.completed} 
-      key={task.id} 
-      toggleTaskCompleted={toggleTaskCompleted}
-      deleteTask={deleteTask}
-      editTask={editTask}
-    />
+        name={task.name} 
+        completed={task.completed} 
+        key={task.id} 
+        toggleTaskCompleted={toggleTaskCompleted}
+        deleteTask={deleteTask}
+        editTask={editTask}
+      />
   ))
 
   const filterList = FILTER_NAMES.map(name => (
@@ -71,6 +71,7 @@ function App({ _tasks }) {
 
   useEffect(() => {
     if (tasks.length < prevTaskLength) {
+      // focus on the heading when delete a task.
       listHeadingRef.current.focus()
     }
   }, [tasks.length, prevTaskLength])
