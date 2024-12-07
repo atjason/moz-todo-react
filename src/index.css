@@ -101,6 +101,10 @@ body {
   background-color: #000;
   color: #fff;
 }
+.btn__primary[disabled] {
+  background-color: #ccc;
+  color: #666;
+}
 .btn-group {
   display: flex;
   justify-content: space-between;
